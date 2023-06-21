@@ -1,11 +1,11 @@
 from tkinter import *
 from tkinter import messagebox
-from tkinter.ttk import Combobox, Notebook, Treeview
+from tkinter.ttk import Combobox, Notebook, Treeview, Button, Entry
 import sys
 import datetime
 import sqlite3
-
-
+from orders_view import EditOrderWindow, show_orders
+import report_view
 
 conn = sqlite3.connect('orders.db') # подключение к базе данных
 cursor = conn.cursor()
@@ -69,67 +69,14 @@ window.option_add("*tearOff", FALSE)
 
 main_menu = Menu()
 
-
-
-
 frame = Frame(
     window,
     padx=10,
     pady=10
 )
-class OrderWindow(Toplevel):
-    def __init__(self):
-        super().__init__()
-        self.title('Список заказов')
-        self.geometry('1800x600')
-
-        tv_orders = Treeview(self)
-        tv_orders.pack(fill=BOTH, expand=True)
-        tv_orders['columns'] = ("ID", "ФИО заказчика","Тип техники","Мастер", "Номер телефона", "Серия паспорта","Номер паспорта","Статус ремонта","Описание поломки","Статус оплаты")
-        tv_orders.heading("#0", text="", anchor=W)
-        tv_orders.column("#0", width=0, stretch=NO)
-        tv_orders.heading("ID", text="ID", anchor=W)
-        tv_orders.column("ID", width=50, stretch=NO)
-        tv_orders.heading("ФИО заказчика", text="ФИО заказчика", anchor=W)
-        tv_orders.column("ФИО заказчика", width=200, stretch=NO)
-        tv_orders.heading("Тип техники", text="Тип техники", anchor=W)
-        tv_orders.column("Тип техники", width=150)
-        tv_orders.heading("Мастер", text="Мастер", anchor=W)
-        tv_orders.column("Мастер", width=150)
-        tv_orders.heading("Номер телефона", text="Номер телефона", anchor=W)
-        tv_orders.column("Номер телефона", width=150)
-        tv_orders.heading("Серия паспорта", text="Серия паспорта", anchor=W)
-        tv_orders.column("Серия паспорта", width=130)
-        tv_orders.heading("Номер паспорта", text="Номер паспорта", anchor=W)
-        tv_orders.column("Номер паспорта", width=130)
-        tv_orders.heading("Статус ремонта", text="Статус ремонта", anchor=W)
-        tv_orders.column("Статус ремонта", width=160)
-        tv_orders.heading("Описание поломки", text="Описание поломки", anchor=W)
-        tv_orders.column("Описание поломки", width=200)
-        tv_orders.heading("Статус оплаты", text="Статус оплаты", anchor=W)
-        tv_orders.column("Статус оплаты", width=150)
-
-
-        conn = sqlite3.connect('orders.db')
-        cursor = conn.cursor()
-        cursor.execute('''SELECT * FROM orders''')
-        rows = cursor.fetchall()
-        for row in rows:
-            tv_orders.insert("", END, text="", values=row)
-        conn.close()
 
 notebook = Notebook(window)
-#notebook.pack(anchor = "nw") -  я не знаю что эт и для чего,на прогу вроде не влияет
 
-def show_orders():
-    OrderWindow()
-
-orders_btn = Button(
-    window,
-    text="Заказы",
-    command = show_orders
-)
-orders_btn.pack(pady=5,anchor = NW)
 
 file_menu = Menu()
 file_menu.add_command(label="Открыть бд",command = lambda: show_orders())
@@ -146,7 +93,7 @@ file_menu2.add_command(label="Закрыть")
 
 
 main_menu.add_cascade(label="Работа с БД", menu=file_menu)
-main_menu.add_cascade(label="Отчет")
+main_menu.add_cascade(label="Отчет", command= lambda: report_view.ReportWindow())
 main_menu.add_cascade(label="Справка",menu=file_menu2)
 
 header = Label(
