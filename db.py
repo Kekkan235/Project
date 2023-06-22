@@ -40,3 +40,18 @@ def get_reports():
     rows = cursor.fetchall()
     conn.close()
     return rows
+
+def get_master():
+    conn = sqlite3.connect('orders.db')
+    cursor = conn.cursor()
+    cursor.execute('''SELECT master FROM orders''')
+    rows = cursor.fetchall()
+    conn.close()
+    return rows
+
+def delete_order(id):
+    conn = sqlite3.connect('orders.db')
+    cursor = conn.cursor()
+    cursor.execute("delete FROM orders WHERE id = ?",(id,))
+    conn.commit()
+    conn.close()

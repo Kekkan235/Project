@@ -8,6 +8,7 @@ from orders_view import EditOrderWindow, show_orders
 import report_view
 from reference import reference, show_reference
 from reference import aboutprogramm, show_about
+import master_view
 
 conn = sqlite3.connect('orders.db') # подключение к базе данных
 cursor = conn.cursor()
@@ -92,10 +93,8 @@ file_menu2.add_command(label="Справка",command=lambda: show_reference())
 file_menu2.add_separator()
 file_menu2.add_command(label="Закрыть")
 file_menu3 = Menu()
-file_menu3.add_command(label="Отченость по заказам")
-file_menu3.add_command(label="Отчетность по оплате")
-file_menu3.add_command(label="Отчетность по выполненным работам")
-file_menu3.add_command(label="Отчетность по статусу готовности")
+file_menu3.add_command(label="Отченость по заказам", command=lambda: report_view.show_reports())
+file_menu3.add_command(label="Отчетность по мастеру",command=lambda:master_view.show_master())
 file_menu3.add_separator()
 file_menu3.add_command(label="Закрыть")
 

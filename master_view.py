@@ -5,7 +5,8 @@ import db
 import datetime
 
 
-class ReportWindow(Toplevel):
+
+class MasterWindow(Toplevel):
     def __init__(self):
         super().__init__()
         self.title('Отчеты')
@@ -14,29 +15,25 @@ class ReportWindow(Toplevel):
         self.label = Label(self, text='Отчеты')
         self.select = Combobox(self, values=db.get_reports())
 
-        self.btn = Button(self, text='Сгенерировать', command=lambda: self.generate_report())
+        self.btn = Button(self, text='Сгенерировать', command=lambda: self.generate_master())
 
         self.label.grid(row=0, column=0, padx=5, pady=5)
         self.select.grid(row=0, column=1, padx=5, pady=5)
         self.btn.grid(row=1, column=2, padx=5, pady=5)
 
-    def generate_report(self):
+    def generate_master(self):
         val = str(self.select.get())
         order_id = int(val.split(" ")[0])
         print(f'Generating report, {order_id}')
         order = db.get_order(order_id)
-        with open(f'reports/report_{datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")}.txt', 'a') as f:
+        with open(f'masters/master_{datetime.datetime.now().strftime("%Y-%m-%d-%H-%M-%S")}.txt', 'a') as f:
            f.write(f"ФИО заказчика: {order[1]}\n")
            f.write(f"Тип техники: {order[2]}\n")
            f.write(f"Мастер: {order[3]}\n")
-           f.write(f"Номер телефона: {order[4]}\n")
-           f.write(f"Серия паспорта: {order[5]}\n")
-           f.write(f"Номер паспорта: {order[6]}\n")
            f.write(f"Статус ремонта: {order[7]}\n")
            f.write(f"Описание поломки: {str(order[8]).rstrip().lstrip()}\n")
-           f.write(f"Статус оплаты: {order[9]}\n")
            f.write(f"Дата обращения: {order[10]}\n")
         messagebox.showinfo('Отчет', 'Отчет сгенерирован')
 
-def show_reports():
-    ReportWindow()
+def show_master():
+    MasterWindow()

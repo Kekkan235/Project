@@ -16,11 +16,11 @@ class EditOrderWindow(Toplevel):
         self.name_entry.insert(0, data[1]) # устанавливаем текущее имя заказчика в поле ввода
 
         self.appliance_label = Label(self, text='Тип техники')
-        self.appliance_combobox = Combobox(self, values=['Холодильник', 'Стиральная машина', 'Посудомоечная машина'])
+        self.appliance_combobox = Combobox(self, values=["Холодильник", "Плита", "Стиральная машина", "Пылесос"])
         # self.appliance_combobox.current(data[2]-1) # устанавливаем текущий тип техники в комбобокс
 
         self.master_label = Label(self, text='Мастер')
-        self.master_combobox = Combobox(self, values=['Иванов', 'Петров', 'Сидоров'])
+        self.master_combobox = Combobox(self, values=["Иванов А.И","Петров А.Б","Антошин С.И","Степанов Д.П"])
         # self.master_combobox.current(data[3]-1) # устанавливаем текущего мастера в комбобокс
 
         self.phone_label = Label(self, text='Номер телефона')
@@ -36,7 +36,7 @@ class EditOrderWindow(Toplevel):
         self.passport_num_entry.insert(0, data[6]) # устанавливаем текущий номер паспорта в поле ввода
 
         self.status_label = Label(self, text='Статус ремонта')
-        self.status_combobox = Combobox(self, values=['Принят', 'Выполняется', 'Завершен'])
+        self.status_combobox = Combobox(self, values=["Не начат","В процессе","Ожидает запчастей/материалов","Ожидает решения клиента","Завершён"])
         # self.status_combobox.current(data[7]-1) # устанавливаем текущий статус ремонта в комбобокс
 
         self.breakdown_label = Label(self, text='Описание поломки')
@@ -44,7 +44,7 @@ class EditOrderWindow(Toplevel):
         self.breakdown_text.insert(END, data[8]) # устанавливаем текущее описание поломки в текстовое поле
 
         self.payment_label = Label(self, text='Статус оплаты')
-        self.payment_combobox = Combobox(self, values=['Оплачен', 'Не оплачен'])
+        self.payment_combobox = Combobox(self, values=["Оплачено полностью","Частичная оплата","Ожидание оплаты","Просроченная оплата","Оплата при получении","Без оплаты"])
         # self.payment_combobox.current(data[9]-1) # устанавливаем текущий статус оплаты в комбобокс
 
         self.save_button = Button(self, text='Сохранить', command=lambda: self.save_changes(order_id))
@@ -72,14 +72,14 @@ class EditOrderWindow(Toplevel):
     def save_changes(self,order_id):
         values = (
            self.name_entry.get(),
-           self.appliance_combobox.current(0),
-           self.master_combobox.current(0),
+           self.appliance_combobox.get(),
+           self.master_combobox.get(),
            self.phone_entry.get(),
            self.passport_series_entry.get(),
            self.passport_num_entry.get(),
-           self.status_combobox.current(0),
+           self.status_combobox.get(),
            self.breakdown_text.get("1.0",END),
-           self.payment_combobox.current(0)
+           self.payment_combobox.get()
        )
         print(f'values for upd {values}')
         print(f'order_id {order_id}')
