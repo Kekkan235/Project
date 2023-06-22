@@ -6,6 +6,8 @@ import datetime
 import sqlite3
 from orders_view import EditOrderWindow, show_orders
 import report_view
+from reference import reference, show_reference
+from reference import aboutprogramm, show_about
 
 conn = sqlite3.connect('orders.db') # подключение к базе данных
 cursor = conn.cursor()
@@ -57,7 +59,7 @@ def submit():
         file.write(f"Статус оплаты: {payment}\n")
         file.write(f"Дата обращения: {datetimewp}\n")
         file.write("===================================\n")
-        messagebox.showinfo("Результат", f"Здравствуйте, {name}! Ваша заявка на ремонт {appliance.lower()} принята. Ваш мастер {master.lower()}")
+        messagebox.showinfo("Оформление", f"Здравствуйте, {name}! Ваша заявка на ремонт {appliance.lower()} принята. Ваш мастер {master.lower()}")
 
 
 
@@ -81,19 +83,25 @@ notebook = Notebook(window)
 file_menu = Menu()
 file_menu.add_command(label="Открыть бд",command = lambda: show_orders())
 file_menu.add_separator()
-file_menu.add_command(label="Добавить запись")
-file_menu.add_command(label="Редактировать бд")
-file_menu.add_separator()
+#file_menu.add_command(label="Добавить запись")
+#file_menu.add_command(label="Редактировать бд")
 file_menu.add_command(label="Закрыть")
 file_menu2 = Menu()
-file_menu2.add_command(label="О программе")
-file_menu2.add_command(label="Справка")
+file_menu2.add_command(label="О программе",command = lambda: show_about())
+file_menu2.add_command(label="Справка",command=lambda: show_reference())
 file_menu2.add_separator()
 file_menu2.add_command(label="Закрыть")
+file_menu3 = Menu()
+file_menu3.add_command(label="Отченость по заказам")
+file_menu3.add_command(label="Отчетность по оплате")
+file_menu3.add_command(label="Отчетность по выполненным работам")
+file_menu3.add_command(label="Отчетность по статусу готовности")
+file_menu3.add_separator()
+file_menu3.add_command(label="Закрыть")
 
 
 main_menu.add_cascade(label="Работа с БД", menu=file_menu)
-main_menu.add_cascade(label="Отчет", command= lambda: report_view.ReportWindow())
+main_menu.add_cascade(label="Отчет", menu=file_menu3) #command= lambda: report_view.ReportWindow())
 main_menu.add_cascade(label="Справка",menu=file_menu2)
 
 header = Label(
